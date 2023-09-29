@@ -10,7 +10,7 @@ pip install -r requirements.txt
 
 python tools/extract_queries.py --file "[path/to/file.pbit]"
 
-### To extract queries all pbit files in directory:
+### To extract queries of all pbit files in directory:
 
 python tools/extract_queries.py --file "[path/to/directory]"
 
