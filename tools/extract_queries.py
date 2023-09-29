@@ -5,32 +5,43 @@ from dax_extract import read_data_model_schema
 import re
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--file', help='pbit files dir or specific file. If dir is given script will print all '
+parser.add_argument('--input', help='pbit files dir or specific file. If dir is given script will print all '
                                    'queries on all pbit files.')
+parser.add_argument('--output', help='csv file to write queries.')
 args = parser.parse_args()
+
+output_file_path = args.output
+
+def write_queries(file_name, queries):
+    with open(output_file_path, "a") as output_file:
+        for query in queries:
+            output_file.write(file_name + ";" + query + "\n")
 
 
 def parse_pbit_file(file_path, file_name):
     print(f"# Parsing '{pbit_file_name}'")
     data = read_data_model_schema(Path(os.path.join(file_path, file_name)))
 
-    printed_query_count = 0
-
     tables = data["model"]["tables"]
+    
+    all_queries = []
 
     for table in tables:
         for partition in table["partitions"]:
-            queries = re.findall('Query=".*"', partition["source"]["expression"])
-
+            queries = re.findall('Query=".*?"', partition["source"]["expression"])
+                        
             for query in queries:
-                printed_query_count += 1
-                print(f"## {printed_query_count}.{' '.join(query.replace('#(lf)', ' ').split())}")
+                clean_query = ' '.join(query.replace('Query="', '')[:-1].replace('#(lf)', ' ').replace('#(tab)', '\t').split())
+                all_queries.append(clean_query)
 
-    if not printed_query_count:
+    if not all_queries:
         print("## No queries found")
+    else:
+        print(f"## {len(all_queries)} queries will be written to output")
+        write_queries(file_name, all_queries)
 
 
-pbit_dir = args.file
+pbit_dir = args.input
 
 if re.match(r'.*\.pbit', pbit_dir):
     pbit_dir, pbit_file_name = os.path.split(pbit_dir)
