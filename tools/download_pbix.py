@@ -42,5 +42,5 @@ run_powershell_command(
 
 print("Running pbix downloader")
 run_powershell_command(
-    command=["pwsh", "download_powerbi_reports.p1"],
+    command=["pwsh", "download_powerbi_reports.ps1"],
     fail_message="Downloader failed!")
