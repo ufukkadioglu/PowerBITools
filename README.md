@@ -1,6 +1,6 @@
 # PowerBITools
 
-### Tested on Ubuntu 22.04.3 LTS
+### Tested on Ubuntu 22.04.3 LTS with Python 3.10.12
 
 ### Install requirements:
 
