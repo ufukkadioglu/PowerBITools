@@ -4,7 +4,7 @@
 
 ### Report downloader tested on Windows 11 Pro with Python 3.10.11
 
-### Install requirements:
+### Install requirements for query extracter:
 
 pip install -r requirements.txt
 
